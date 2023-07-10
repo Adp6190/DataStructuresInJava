@@ -1,0 +1,41 @@
+public class Graph {
+   class Edge {
+      int source, destination;
+   }
+   int vertices, edges;
+   Edge[] edge;
+   Graph(int vertices, int edges) {
+      this.vertices = vertices;
+      this.edges = edges;
+      edge = new Edge[edges];
+      for(int i = 0; i < edges; i++) {
+         edge[i] = new Edge();
+      }
+   }
+   public static void main(String[] args) {
+      int vertices_count = 5;
+      int edges_count = 8;
+      Graph graph_object = new Graph(vertices_count, edges_count);
+      System.out.println("A graph object is defined.");
+      graph_object.edge[0].source = 1;
+      graph_object.edge[0].destination = 2;
+      graph_object.edge[1].source = 1;
+      graph_object.edge[1].destination = 3;
+      graph_object.edge[2].source = 1;
+      graph_object.edge[2].destination = 4;
+      graph_object.edge[3].source = 2;
+      graph_object.edge[3].destination = 4;
+      graph_object.edge[4].source = 2;
+      graph_object.edge[4].destination = 5;
+      graph_object.edge[5].source = 3;
+      graph_object.edge[5].destination = 4;
+      graph_object.edge[6].source = 3;
+      graph_object.edge[6].destination = 5;
+      graph_object.edge[7].source = 4;
+      graph_object.edge[7].destination = 5;
+      System.out.println("The connections between the edges of the Graph are: ");
+      for(int i = 0; i < edges_count; i++) {
+         System.out.println(graph_object.edge[i].source + " - " + graph_object.edge[i].destination);
+      }
+   }
+}
