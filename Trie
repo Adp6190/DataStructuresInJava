@@ -1,0 +1,139 @@
+import java.util.*;
+ 
+class TrieNode
+{
+    char data;
+    boolean isEnd;
+    int count;
+    LinkedList<TrieNode> childList;
+ 
+    
+    public TrieNode(char c)                //Constructor
+    {
+        childList = new LinkedList();
+        isEnd = false;
+        data = c;
+        count = 0;
+    }
+    public TrieNode getChild(char c)
+    {
+        if (childList != null)
+            for (TrieNode eachChild : childList)
+                if (eachChild.data == c)
+                    return eachChild;
+        return null;
+    }
+}
+ 
+public class Trie
+{
+    private TrieNode root;
+ 
+
+    public Trie()
+    {
+        root = new TrieNode(' ');
+    }
+   
+    public void insert(String word)              //Method for inserting words from Trie
+    {
+        if (search(word) == true)
+            return;
+        TrieNode tempCurr = root;
+        for (char ch : word.toCharArray() )
+        {
+            TrieNode child = tempCurr.getChild(ch);
+            if (child != null)
+                tempCurr = child;
+            else
+            {
+                // If child not present, adding it io the list
+                tempCurr.childList.add(new TrieNode(ch));
+                tempCurr = tempCurr.getChild(ch);
+            }
+            tempCurr.count++;
+        }
+        tempCurr.isEnd = true;
+    }
+   
+    public boolean search(String word)                    //Method for searching words in Trie
+    {
+        TrieNode tempCurr = root;
+        for (char ch : word.toCharArray() )
+        {
+            if (tempCurr.getChild(ch) == null)
+                return false;
+            else
+                tempCurr = tempCurr.getChild(ch);
+        }
+        if (tempCurr.isEnd == true)
+            return true;
+        return false;
+    }
+    
+    public void remove(String word)                      //Method for Removing words in Trie
+    {
+        if (search(word) == false)
+        {
+            System.out.println(word +" does not present in trie");
+            return;
+        }
+        TrieNode tempCurr = root;
+        for (char ch : word.toCharArray())
+        {
+            TrieNode child = tempCurr.getChild(ch);
+            if (child.count == 1)
+            {
+                tempCurr.childList.remove(child);
+                return;
+            }
+            else
+            {
+                child.count--;
+                tempCurr = child;
+            }
+        }
+        tempCurr.isEnd = false;
+    }
+ 
+    public static void displayWordsInTrie(TrieNode root, String str)
+    {
+        TrieNode tempCurr = root;
+        if(root.childList==null || root.childList.size()==0)
+            return;
+        Iterator iter=tempCurr.childList.iterator();
+        while(iter.hasNext())
+        {
+            TrieNode trieNode= (TrieNode) iter.next();
+            str+=trieNode.data;
+            displayWordsInTrie(trieNode,str);
+            if(trieNode.isEnd==true)
+            {
+                System.out.print(" "+str);
+                str=str.substring(0,str.length()-1);
+            }
+            else
+            {
+                str=str.substring(0,str.length()-1);
+            }
+        }
+ 
+    }
+    public static void main(String[] args)
+    {
+        Trie t = new Trie();
+        t.insert("THEWITCHER");
+        t.insert("superman");
+        t.insert("goat");
+        t.insert("Walter");
+        t.insert("apt");
+ 
+        System.out.println("go present in trie : "+t.search("go"));
+        System.out.println("Walter present in trie : "+t.search("Walter"));
+        System.out.println("superman present in trie : "+t.search("superman"));
+        System.out.println("========================");
+        System.out.println("Displaying all word present in trie : ");
+        displayWordsInTrie(t.root,"");
+    }
+}
+ 
